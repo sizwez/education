@@ -22,6 +22,11 @@ export interface Course {
   isPremium?: boolean;
 }
 
+export interface EnrolledCourse extends Course {
+  progress: number;
+  lastAccessed: string;
+}
+
 export interface Message {
   role: 'user' | 'model';
   text: string;
@@ -34,9 +39,18 @@ export interface QuizQuestion {
   correctAnswer: number;
 }
 
-export interface UserProgress {
+export interface QuizResult {
+  id: string;
+  topic: string;
   subject: string;
-  completed: number;
-  total: number;
   score: number;
+  total: number;
+  date: string;
+}
+
+export interface UserStats {
+  xp: number;
+  streak: number;
+  rank: string;
+  credits: number;
 }

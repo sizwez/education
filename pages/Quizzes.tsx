@@ -1,9 +1,13 @@
 
 import React, { useState } from 'react';
 import { generateQuiz } from '../services/gemini';
-import { QuizQuestion } from '../types';
+import { QuizQuestion, QuizResult } from '../types';
 
-const Quizzes: React.FC = () => {
+interface QuizzesProps {
+  onQuizComplete: (result: QuizResult) => void;
+}
+
+const Quizzes: React.FC<QuizzesProps> = ({ onQuizComplete }) => {
   const [topic, setTopic] = useState('');
   const [subject, setSubject] = useState('Mathematics');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -39,67 +43,83 @@ const Quizzes: React.FC = () => {
       setCurrentQuestionIndex(prev => prev + 1);
       setSelectedAnswer(null);
     } else {
+      const result: QuizResult = {
+        id: Math.random().toString(36).substr(2, 9),
+        topic,
+        subject,
+        score,
+        total: quiz!.length,
+        date: new Date().toLocaleDateString()
+      };
+      onQuizComplete(result);
       setQuizFinished(true);
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fadeIn">
-      <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -z-10 opacity-50"></div>
-        <h2 className="text-3xl font-black text-slate-800 mb-2">AI Practice Lab</h2>
-        <p className="text-slate-500">Generate personalized mock exams based on the South African CAPS curriculum.</p>
+      <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-50/50 rounded-bl-full -z-10"></div>
+        <h2 className="text-3xl font-black text-slate-800 mb-2">AI Practice Lab 🔬</h2>
+        <p className="text-slate-500 font-medium">Personalized mock exams based on the South African CAPS curriculum.</p>
 
         {!quiz && !isGenerating && (
-          <div className="mt-8 flex flex-col md:flex-row gap-4">
+          <div className="mt-10 flex flex-col md:flex-row gap-4 p-2 bg-slate-50 rounded-[2rem] border border-slate-100">
             <select 
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:border-indigo-500 font-medium"
+              className="px-6 py-4 rounded-2xl border-none bg-white shadow-sm outline-none focus:ring-2 focus:ring-indigo-100 font-bold text-slate-700"
             >
               <option>Mathematics</option>
               <option>Physical Sciences</option>
               <option>Life Sciences</option>
               <option>English FAL</option>
-              <option>Economics</option>
               <option>Accounting</option>
             </select>
             <input 
               type="text" 
-              placeholder="Enter topic (e.g. Euclidean Geometry, Cellular Respiration)"
+              placeholder="Topic (e.g. Euclidean Geometry)"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:border-indigo-500"
+              className="flex-1 px-6 py-4 rounded-2xl border-none bg-white shadow-sm outline-none focus:ring-2 focus:ring-indigo-100 font-medium"
             />
             <button 
               onClick={startQuiz}
-              className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
+              disabled={!topic.trim()}
+              className="bg-indigo-600 disabled:bg-slate-300 text-white px-8 py-4 rounded-2xl font-black hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 active:scale-95"
             >
-              Generate Quiz
+              Generate Exam
             </button>
           </div>
         )}
 
         {isGenerating && (
-          <div className="mt-12 text-center py-20">
-            <div className="inline-block animate-spin w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full mb-4"></div>
-            <p className="text-slate-600 font-bold animate-pulse">Our AI is crafting your custom practice exam...</p>
+          <div className="mt-12 text-center py-20 flex flex-col items-center">
+            <div className="relative mb-6">
+              <div className="w-16 h-16 border-4 border-indigo-100 rounded-full"></div>
+              <div className="absolute top-0 w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <p className="text-slate-900 font-black text-xl mb-1">Crafting your mock exam...</p>
+            <p className="text-slate-400 text-sm font-medium">Our AI is analyzing the {subject} curriculum for you.</p>
           </div>
         )}
 
         {quiz && !quizFinished && (
-          <div className="mt-12 space-y-8 animate-slideUp">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-indigo-600 uppercase tracking-widest">Question {currentQuestionIndex + 1} of {quiz.length}</span>
-              <div className="w-48 h-2 bg-slate-100 rounded-full overflow-hidden">
+          <div className="mt-12 space-y-10 animate-slideUp">
+            <div className="flex items-center justify-between bg-slate-50 px-6 py-4 rounded-2xl">
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">In Progress</span>
+                <span className="text-sm font-black text-slate-800">Question {currentQuestionIndex + 1} of {quiz.length}</span>
+              </div>
+              <div className="w-32 h-2.5 bg-white rounded-full overflow-hidden p-0.5 border border-slate-200">
                 <div 
-                  className="h-full bg-indigo-500 transition-all duration-500" 
+                  className="h-full bg-indigo-500 rounded-full transition-all duration-500" 
                   style={{ width: `${((currentQuestionIndex + 1) / quiz.length) * 100}%` }}
                 ></div>
               </div>
             </div>
 
-            <h3 className="text-2xl font-bold text-slate-800 leading-tight">
+            <h3 className="text-2xl font-black text-slate-800 leading-tight">
               {quiz[currentQuestionIndex].question}
             </h3>
 
@@ -108,9 +128,9 @@ const Quizzes: React.FC = () => {
                 <button
                   key={idx}
                   onClick={() => handleAnswer(idx)}
-                  className={`p-5 rounded-2xl border-2 text-left transition-all ${
+                  className={`p-6 rounded-3xl border-2 text-left transition-all group ${
                     selectedAnswer === null 
-                      ? 'border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30' 
+                      ? 'border-slate-100 bg-white hover:border-indigo-400 hover:bg-indigo-50/50' 
                       : idx === quiz[currentQuestionIndex].correctAnswer
                         ? 'border-emerald-500 bg-emerald-50 text-emerald-800'
                         : selectedAnswer === idx
@@ -119,12 +139,18 @@ const Quizzes: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    <span className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-slate-500 text-sm">
+                    <span className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm transition-colors ${
+                      selectedAnswer === null 
+                        ? 'bg-slate-100 text-slate-400 group-hover:bg-indigo-600 group-hover:text-white' 
+                        : idx === quiz[currentQuestionIndex].correctAnswer
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-slate-100 text-slate-300'
+                    }`}>
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    <span className="font-semibold">{option}</span>
+                    <span className="font-bold flex-1">{option}</span>
                     {selectedAnswer !== null && idx === quiz[currentQuestionIndex].correctAnswer && (
-                      <i className="fa-solid fa-circle-check text-emerald-500 ml-auto text-xl"></i>
+                      <i className="fa-solid fa-circle-check text-emerald-600 text-2xl"></i>
                     )}
                   </div>
                 </button>
@@ -134,9 +160,10 @@ const Quizzes: React.FC = () => {
             {selectedAnswer !== null && (
               <button 
                 onClick={nextQuestion}
-                className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-xl"
+                className="w-full bg-slate-900 text-white py-5 rounded-3xl font-black text-lg hover:bg-slate-800 transition-all shadow-2xl active:scale-95 flex items-center justify-center gap-3"
               >
-                {currentQuestionIndex === quiz.length - 1 ? 'Finish Quiz' : 'Next Question'}
+                {currentQuestionIndex === quiz.length - 1 ? 'See Results' : 'Next Question'}
+                <i className="fa-solid fa-arrow-right"></i>
               </button>
             )}
           </div>
@@ -144,44 +171,37 @@ const Quizzes: React.FC = () => {
 
         {quizFinished && (
           <div className="mt-12 text-center py-10 animate-scaleIn">
-            <div className="w-24 h-24 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
-              <i className="fa-solid fa-trophy"></i>
+            <div className="w-32 h-32 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-5xl mx-auto mb-8 shadow-inner">
+              <i className="fa-solid fa-trophy animate-bounce"></i>
             </div>
-            <h3 className="text-3xl font-black text-slate-800 mb-2">Quiz Complete!</h3>
-            <p className="text-slate-500 mb-8">You scored <span className="text-indigo-600 font-bold">{score} out of {quiz?.length}</span></p>
+            <h3 className="text-4xl font-black text-slate-800 mb-2">Great Work, Thando!</h3>
+            <p className="text-slate-500 font-medium mb-10">You earned <span className="text-indigo-600 font-black">+{score * 100} XP</span> for completing the {topic} quiz.</p>
             
+            <div className="bg-slate-50 rounded-[2rem] p-8 mb-10 border border-slate-100 flex items-center justify-around">
+               <div className="text-center">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Score</p>
+                  <p className="text-4xl font-black text-indigo-600">{score}/{quiz?.length}</p>
+               </div>
+               <div className="w-px h-12 bg-slate-200"></div>
+               <div className="text-center">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Percentage</p>
+                  <p className="text-4xl font-black text-slate-900">{Math.round((score / quiz!.length) * 100)}%</p>
+               </div>
+            </div>
+
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <button 
                 onClick={() => setQuiz(null)}
-                className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all"
+                className="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 active:scale-95"
               >
-                Take Another Quiz
+                Take New Quiz
               </button>
-              <button className="bg-slate-100 text-slate-700 px-8 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all">
-                Review Mistakes
+              <button className="bg-white text-slate-700 border border-slate-200 px-10 py-4 rounded-2xl font-black hover:bg-slate-50 transition-all active:scale-95">
+                Review Answers
               </button>
             </div>
           </div>
         )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          { title: 'Algebra Master', date: 'Oct 12', score: '80%' },
-          { title: 'Organic Chemistry', date: 'Oct 10', score: '100%' },
-          { title: 'Newtonian Physics', date: 'Oct 08', score: '60%' },
-        ].map((item, idx) => (
-          <div key={idx} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-center">
-            <div>
-              <p className="font-bold text-slate-800">{item.title}</p>
-              <p className="text-xs text-slate-400">{item.date}</p>
-            </div>
-            <div className="text-right">
-              <p className={`font-black ${parseInt(item.score) >= 80 ? 'text-emerald-500' : 'text-amber-500'}`}>{item.score}</p>
-              <p className="text-[10px] uppercase font-bold text-slate-300 tracking-wider">Result</p>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );

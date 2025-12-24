@@ -1,0 +1,7 @@
+{
+  "name": "EduPulse SA",
+  "description": "A comprehensive South African education and tutoring platform specializing in Grade R-12, NSC/IEB test prep, and university skills training with integrated AI tutoring.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

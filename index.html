@@ -3,103 +3,1110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Education Platform</title>
+    <title>EduConnect - Professional Learning Platform</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #d946ef15 0%, #d946ef05 100%);
-            min-height: 100vh;
-            padding: 20px;
+
+        :root {
+            --primary: #d946ef;
+            --primary-dark: #a21caf;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --border: #e2e8f0;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        /* Navigation */
+        .navbar {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .header {
-            background: #d946ef;
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
             color: white;
-            padding: 60px 40px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(217, 70, 239, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%);
+            color: white;
+            padding: 80px 20px;
             text-align: center;
         }
-        .header h1 { font-size: 3rem; margin-bottom: 10px; }
-        .status {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 25px;
-            background: #10b981;
-            color: white;
-            font-weight: bold;
-            margin-top: 20px;
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
         }
-        .content { padding: 40px; }
-        .card {
-            background: #fdf4ff;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px 0;
-            border-left: 5px solid #d946ef;
-            transition: transform 0.3s;
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+        .search-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        .card h3 { color: #d946ef; margin-bottom: 15px; font-size: 1.5rem; }
-        .btn {
-            background: #d946ef;
-            color: white;
-            padding: 15px 30px;
+
+        .search-box input {
+            flex: 1;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .search-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
             cursor: pointer;
-            margin: 10px 5px;
+            font-weight: 600;
+        }
+
+        /* Stats Section */
+        .stats {
+            max-width: 1400px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--dark);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
             transition: all 0.3s;
         }
-        .btn:hover { transform: scale(1.05); }
-        .grid {
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--primary);
+            background: #fdf4ff;
+            color: var(--primary);
+        }
+
+        /* Course Grid */
+        .course-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .course-content {
+            padding: 20px;
+        }
+
+        .course-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #fdf4ff;
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .course-instructor {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #f59e0b;
+        }
+
+        .course-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .price-free {
+            color: var(--secondary);
+        }
+
+        /* Tutor Cards */
+        .tutor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .tutor-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .tutor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .tutor-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            border: 4px solid #fdf4ff;
+        }
+
+        .tutor-name {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .tutor-subject {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .tutor-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+            color: #f59e0b;
+        }
+
+        .tutor-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tutor-stat {
+            text-align: center;
+        }
+
+        .tutor-stat strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .tutor-stat span {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 80px 20px;
+            margin: 60px 0;
+        }
+
+        .features-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #fdf4ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+        }
+
+        .feature h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .progress-bars {
+            display: grid;
             gap: 20px;
-            margin: 30px 0;
+        }
+
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 20px 30px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📚 Education Platform</h1>
-            <p>Learn Anything, Anywhere</p>
-            <span class="status">🟢 Live & Ready</span>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span>🎓</span>
+                <span>EduConnect</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showTab('courses')">Courses</a></li>
+                <li><a href="#" onclick="showTab('tutors')">Find Tutors</a></li>
+                <li><a href="#" onclick="showTab('dashboard')">My Dashboard</a></li>
+                <li><a href="#features">Features</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn btn-outline" onclick="openModal('login')">Login</button>
+                <button class="btn btn-primary" onclick="openModal('signup')">Sign Up</button>
+            </div>
         </div>
-        <div class="content">
-            <div class="card">
-                <h3>Quality Education for All</h3>
-                <p>Connect with expert tutors, access learning resources, and achieve your academic goals.</p>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Learn Without Limits</h1>
+        <p>Access 10,000+ courses, connect with expert tutors, and achieve your learning goals</p>
+        <div class="search-box">
+            <input type="text" placeholder="What do you want to learn today?" id="searchInput">
+            <button onclick="searchCourses()">🔍 Search</button>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat-card">
+            <h3>10,000+</h3>
+            <p>Active Courses</p>
+        </div>
+        <div class="stat-card">
+            <h3>50,000+</h3>
+            <p>Students</p>
+        </div>
+        <div class="stat-card">
+            <h3>2,500+</h3>
+            <p>Expert Tutors</p>
+        </div>
+        <div class="stat-card">
+            <h3>98%</h3>
+            <p>Satisfaction Rate</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('courses')">Browse Courses</button>
+            <button class="tab" onclick="showTab('tutors')">Find Tutors</button>
+            <button class="tab" onclick="showTab('dashboard')">My Progress</button>
+        </div>
+
+        <!-- Courses Tab -->
+        <div id="courses-tab" class="tab-content">
+            <h2 class="section-title">Featured Courses</h2>
+
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterCourses('all')">All</button>
+                <button class="filter-btn" onclick="filterCourses('programming')">Programming</button>
+                <button class="filter-btn" onclick="filterCourses('design')">Design</button>
+                <button class="filter-btn" onclick="filterCourses('business')">Business</button>
+                <button class="filter-btn" onclick="filterCourses('languages')">Languages</button>
+                <button class="filter-btn" onclick="filterCourses('math')">Mathematics</button>
             </div>
-            <div class="grid">
-                <div class="card">
-                    <h3>👨‍🏫 Find Tutors</h3>
-                    <p>Expert tutors in all subjects</p>
-                </div>
-                <div class="card">
-                    <h3>📖 Online Courses</h3>
-                    <p>Self-paced learning materials</p>
-                </div>
-                <div class="card">
-                    <h3>🎓 Certifications</h3>
-                    <p>Earn recognized certificates</p>
-                </div>
+
+            <div class="course-grid" id="courseGrid">
+                <!-- Courses will be loaded here -->
             </div>
-            <div style="text-align: center; margin-top: 40px;">
-                <button class="btn" onclick="alert('Start learning today!')">Find Tutor</button>
-                <button class="btn" onclick="alert('Contact: sizwe70519@gmail.com')">Become a Tutor</button>
+        </div>
+
+        <!-- Tutors Tab -->
+        <div id="tutors-tab" class="tab-content" style="display: none;">
+            <h2 class="section-title">Expert Tutors</h2>
+            <div class="tutor-grid" id="tutorGrid">
+                <!-- Tutors will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content" style="display: none;">
+            <h2 class="section-title">Your Learning Dashboard</h2>
+
+            <div class="dashboard-preview">
+                <h3 style="margin-bottom: 30px;">Course Progress</h3>
+                <div class="progress-bars" id="progressBars">
+                    <!-- Progress bars will be loaded here -->
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">📚</div>
+                <h3>10,000+ Courses</h3>
+                <p>Learn from comprehensive courses in every subject imaginable</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">👨‍🏫</div>
+                <h3>Expert Tutors</h3>
+                <p>Connect with verified tutors for personalized 1-on-1 sessions</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>Learn Anywhere</h3>
+                <p>Access your courses on any device, anytime, anywhere</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3>Track Progress</h3>
+                <p>Monitor your learning journey with detailed analytics</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎓</div>
+                <h3>Get Certified</h3>
+                <p>Earn recognized certificates to showcase your achievements</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <h3>Live Chat Support</h3>
+                <p>Get instant help from our community and support team</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🎓 EduConnect</h4>
+                <p>Empowering learners worldwide with quality education and expert guidance.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#">Browse Courses</a></li>
+                    <li><a href="#">Find Tutors</a></li>
+                    <li><a href="#">Become a Tutor</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="mailto:sizwe70519@gmail.com">Contact: sizwe70519@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 EduConnect. All rights reserved. Built with ❤️ for learners everywhere.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Welcome Back</h2>
+                <p id="modalSubtitle">Login to continue your learning journey</p>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Form content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const courses = [
+            { id: 1, title: "Complete Web Development Bootcamp", category: "programming", instructor: "Sarah Johnson", rating: 4.8, reviews: 1250, price: "$49.99", emoji: "💻", students: 12500 },
+            { id: 2, title: "Advanced JavaScript & TypeScript", category: "programming", instructor: "Mike Chen", rating: 4.9, reviews: 890, price: "$59.99", emoji: "⚡", students: 8900 },
+            { id: 3, title: "UI/UX Design Masterclass", category: "design", instructor: "Emma Davis", rating: 4.7, reviews: 2100, price: "$44.99", emoji: "🎨", students: 15600 },
+            { id: 4, title: "Digital Marketing Strategy", category: "business", instructor: "John Smith", rating: 4.6, reviews: 980, price: "$39.99", emoji: "📊", students: 7800 },
+            { id: 5, title: "Spanish for Beginners", category: "languages", instructor: "Maria Garcia", rating: 4.9, reviews: 1560, price: "Free", emoji: "🗣️", students: 23400 },
+            { id: 6, title: "Calculus I - Complete Course", category: "math", instructor: "Dr. Robert Lee", rating: 4.8, reviews: 670, price: "$34.99", emoji: "📐", students: 5400 },
+            { id: 7, title: "Python for Data Science", category: "programming", instructor: "Lisa Wong", rating: 4.9, reviews: 1890, price: "$54.99", emoji: "🐍", students: 18900 },
+            { id: 8, title: "Graphic Design Essentials", category: "design", instructor: "Alex Turner", rating: 4.7, reviews: 1120, price: "$42.99", emoji: "✨", students: 9800 },
+            { id: 9, title: "Business Analytics", category: "business", instructor: "David Brown", rating: 4.6, reviews: 540, price: "$49.99", emoji: "📈", students: 4300 }
+        ];
+
+        const tutors = [
+            { name: "Dr. Sarah Mitchell", subject: "Mathematics", rating: 4.9, students: 450, sessions: 1200, price: "$35/hr", emoji: "👩‍🏫" },
+            { name: "Prof. James Anderson", subject: "Physics", rating: 4.8, students: 320, sessions: 890, price: "$40/hr", emoji: "👨‍🏫" },
+            { name: "Emily Chen", subject: "Chinese Language", rating: 4.9, students: 580, sessions: 1500, price: "$30/hr", emoji: "👩‍💼" },
+            { name: "Michael Rodriguez", subject: "Guitar & Music", rating: 4.7, students: 290, sessions: 780, price: "$28/hr", emoji: "👨‍🎤" },
+            { name: "Dr. Aisha Patel", subject: "Chemistry", rating: 4.9, students: 410, sessions: 1100, price: "$38/hr", emoji: "👩‍🔬" },
+            { name: "David Kim", subject: "Computer Science", rating: 4.8, students: 520, sessions: 1350, price: "$45/hr", emoji: "👨‍💻" }
+        ];
+
+        const myProgress = [
+            { course: "Web Development Bootcamp", progress: 75 },
+            { course: "JavaScript Masterclass", progress: 45 },
+            { course: "UI/UX Design", progress: 90 },
+            { course: "Spanish for Beginners", progress: 30 }
+        ];
+
+        // Load courses
+        function loadCourses(filter = 'all') {
+            const grid = document.getElementById('courseGrid');
+            const filtered = filter === 'all' ? courses : courses.filter(c => c.category === filter);
+
+            grid.innerHTML = filtered.map(course => `
+                <div class="course-card" onclick="openCourseDetail(${course.id})">
+                    <div class="course-image">${course.emoji}</div>
+                    <div class="course-content">
+                        <span class="course-category">${course.category}</span>
+                        <h3 class="course-title">${course.title}</h3>
+                        <div class="course-instructor">
+                            <span>👤</span>
+                            <span>${course.instructor}</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-rating">
+                                <span>⭐</span>
+                                <span>${course.rating} (${course.reviews})</span>
+                            </div>
+                            <div class="course-price ${course.price === 'Free' ? 'price-free' : ''}">
+                                ${course.price}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load tutors
+        function loadTutors() {
+            const grid = document.getElementById('tutorGrid');
+            grid.innerHTML = tutors.map(tutor => `
+                <div class="tutor-card">
+                    <div class="tutor-avatar">${tutor.emoji}</div>
+                    <h3 class="tutor-name">${tutor.name}</h3>
+                    <div class="tutor-subject">${tutor.subject}</div>
+                    <div class="tutor-rating">
+                        <span>⭐</span>
+                        <span>${tutor.rating} Rating</span>
+                    </div>
+                    <div class="tutor-stats">
+                        <div class="tutor-stat">
+                            <strong>${tutor.students}</strong>
+                            <span>Students</span>
+                        </div>
+                        <div class="tutor-stat">
+                            <strong>${tutor.sessions}</strong>
+                            <span>Sessions</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 1.3rem; font-weight: 700; color: var(--primary);">
+                        ${tutor.price}
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="bookTutor('${tutor.name}')">
+                        Book Session
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Load dashboard
+        function loadDashboard() {
+            const container = document.getElementById('progressBars');
+            container.innerHTML = myProgress.map(item => `
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <strong>${item.course}</strong>
+                        <span>${item.progress}% Complete</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${item.progress}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Tab switching
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').style.display = 'block';
+
+            if (tab === 'tutors') loadTutors();
+            if (tab === 'dashboard') loadDashboard();
+        }
+
+        // Filter courses
+        function filterCourses(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadCourses(category);
+        }
+
+        // Search
+        function searchCourses() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = courses.filter(c => 
+                c.title.toLowerCase().includes(query) || 
+                c.category.toLowerCase().includes(query) ||
+                c.instructor.toLowerCase().includes(query)
+            );
+
+            const grid = document.getElementById('courseGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px;">No courses found. Try a different search term.</p>';
+            } else {
+                grid.innerHTML = filtered.map(course => `
+                    <div class="course-card" onclick="openCourseDetail(${course.id})">
+                        <div class="course-image">${course.emoji}</div>
+                        <div class="course-content">
+                            <span class="course-category">${course.category}</span>
+                            <h3 class="course-title">${course.title}</h3>
+                            <div class="course-instructor">
+                                <span>👤</span>
+                                <span>${course.instructor}</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <span>⭐</span>
+                                    <span>${course.rating} (${course.reviews})</span>
+                                </div>
+                                <div class="course-price ${course.price === 'Free' ? 'price-free' : ''}">
+                                    ${course.price}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Modal functions
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const body = document.getElementById('modalBody');
+
+            if (type === 'login') {
+                title.textContent = 'Welcome Back';
+                subtitle.textContent = 'Login to continue your learning journey';
+                body.innerHTML = `
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" required placeholder="Enter your password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                    </form>
+                `;
+            } else if (type === 'signup') {
+                title.textContent = 'Start Learning Today';
+                subtitle.textContent = 'Create your free account';
+                body.innerHTML = `
+                    <form onsubmit="handleSignup(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" required placeholder="Create a password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                    </form>
+                `;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function openCourseDetail(id) {
+            const course = courses.find(c => c.id === id);
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const body = document.getElementById('modalBody');
+
+            title.textContent = course.title;
+            subtitle.textContent = `by ${course.instructor}`;
+            body.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="font-size: 5rem; margin-bottom: 20px;">${course.emoji}</div>
+                    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
+                        <div>
+                            <strong style="color: var(--primary);">⭐ ${course.rating}</strong>
+                            <div style="font-size: 0.9rem; color: #64748b;">${course.reviews} reviews</div>
+                        </div>
+                        <div>
+                            <strong style="color: var(--primary);">${course.students.toLocaleString()}</strong>
+                            <div style="font-size: 0.9rem; color: #64748b;">students</div>
+                        </div>
+                    </div>
+                </div>
+                <h3 style="margin-bottom: 15px;">What you'll learn:</h3>
+                <ul style="margin-bottom: 25px; line-height: 2;">
+                    <li>✅ Master the fundamentals and advanced concepts</li>
+                    <li>✅ Build real-world projects from scratch</li>
+                    <li>✅ Get certificate upon completion</li>
+                    <li>✅ Lifetime access to course materials</li>
+                </ul>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">${course.price}</div>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="enrollCourse(${course.id})">
+                        Enroll Now
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function bookTutor(name) {
+            alert(`Booking session with ${name}! This feature will be available soon. Contact: sizwe70519@gmail.com`);
+        }
+
+        function enrollCourse(id) {
+            alert('Enrollment feature coming soon! Contact sizwe70519@gmail.com for early access.');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            alert('Login functionality will be available soon! Contact: sizwe70519@gmail.com');
+            closeModal();
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            alert('Sign up functionality will be available soon! Contact: sizwe70519@gmail.com');
+            closeModal();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCourses();
+        });
+
+        // Close modal on outside click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        // Search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchCourses();
+        });
+    </script>
 </body>
 </html>
